@@ -90,6 +90,15 @@ def build_targets(pred_boxes, target, anchors, num_anchors, num_classes, nH, nW,
         想一想如果不这么做会怎么样 ？
         有一些明明对上了一部分的点，也被当做没对上参与回归了
         或者只对上了一部分的点，也被当做完全对上了参与计算
+        YOLOv3 predicts an objectness score for each bounding box 
+        using logistic regression. This should be 1 if the bounding box prior 
+        overlaps a ground truth object by more than any other bounding box prior. 
+        If the bounding box prior is not the best but does overlap a ground truth object 
+        by more than some threshold we ignore the prediction, following [15].
+        We use the threshold of .5. 
+        Unlike [15] our system only assigns one bounding box prior for each ground truth object. 
+        If a bounding box prior is not assigned to a ground truth object
+        it incurs no loss for coordinate or class predictions, only objectness.
         """
     if seen < 12800:
         #12800是一个epoch中的图片总数吧 ？
